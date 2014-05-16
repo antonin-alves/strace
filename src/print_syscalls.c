@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:59:47 2014 chauvo_t
-** Last update Fri May 16 11:10:12 2014 Thomas de Beauchene
+** Last update Fri May 16 11:41:30 2014 Thomas de Beauchene
 */
 
 #include "strace.h"
@@ -62,7 +62,7 @@ void	print_args(int nb_syscall, struct user_regs_struct *registers)
     {
       (void)fprintf(stderr, "\033[33m");
       print_arg(g_syscalls[nb_syscall].params[i], i, registers);
-      (void)fprintf(stderr, "\033[36m, ");
+      (void)fprintf(stderr, "\033[0m, ");
       ++i;
     }
   (void)fprintf(stderr, "\033[33m");
@@ -74,9 +74,9 @@ int	print_syscall(int nb_syscall, struct user_regs_struct *registers)
   (void)registers;
   (void)fprintf(stderr, "\033[32m");
   (void)fprintf(stderr, "%s", g_syscalls[nb_syscall].name);
-  (void)fprintf(stderr, "\033[36m(");
+  (void)fprintf(stderr, "\033[0m(");
   print_args(nb_syscall, registers);
-  (void)fprintf(stderr, "\033[36m) = \033[31m");
+  (void)fprintf(stderr, "\033[0m) = \033[31m");
   print_return_value(g_syscalls[nb_syscall].ret_type, registers);
   (void)fprintf(stderr, "\033[0m");
   (void)printf("\n");
