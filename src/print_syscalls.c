@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:59:47 2014 chauvo_t
-** Last update Fri May 16 11:41:30 2014 Thomas de Beauchene
+** Last update Sat May 17 00:32:31 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -38,7 +38,8 @@ void	print_arg(char *type, int arg_nb, struct user_regs_struct *registers)
   int	i;
 
   i = 0;
-  if (type[strlen(type) - 1] == '*' && strcmp(type, "char *"))
+  if (type[strlen(type) - 1] == '*'
+      && strcmp(type, "char *") && strcmp(type, "char **"))
     print_pointer(arg_nb_to_register(arg_nb, registers));
   else
     {
@@ -50,7 +51,10 @@ void	print_arg(char *type, int arg_nb, struct user_regs_struct *registers)
 
 void	print_return_value(char *type, struct user_regs_struct *registers)
 {
-  print_arg(type, -1, registers);
+  if ((long long)registers->rax < 0)
+    fprintf(stderr, "-1 (%s)", strerror(-registers->rax));
+  else
+    print_arg(type, -1, registers);
 }
 
 void	print_args(int nb_syscall, struct user_regs_struct *registers)

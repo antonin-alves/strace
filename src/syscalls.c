@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 15:52:42 2014 chauvo_t
-** Last update Fri May 16 12:13:08 2014 Thomas de Beauchene
+** Last update Fri May 16 18:37:57 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -86,7 +86,7 @@ const t_prototype g_syscalls[] =
   {"fork", 0, {}, "pid_t"},
   {"vfork", 0, {}, "pid_t"},
   {"execve", 3,
-   {"char *", "char *", "char * *"}, "int"},
+   {"char *", "char **", "char **"}, "int"},
   {"exit", 1, {"int"}, "void"},
   {"wait4", 4, {"pid_t", "int *", "int", "struct rusage *"}, "pid_t"},
   {"kill", 2, {"pid_t", "int"}, "int"},

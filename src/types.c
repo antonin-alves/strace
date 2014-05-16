@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 09:34:50 2014 chauvo_t
-** Last update Fri May 16 10:34:50 2014 Thomas de Beauchene
+** Last update Sat May 17 00:30:30 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -14,6 +14,7 @@ const t_types	g_types[] =
   {
     {"void", &print_nothing},
     {"char *", &print_string},
+    {"char **", &print_string_tab},
     {"int", &print_int},
     {"int[2]", &print_pointer},
     {"uint32_t", &print_uint},

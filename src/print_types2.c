@@ -5,10 +5,10 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 00:57:02 2014 chauvo_t
-** Last update Fri May 16 10:34:35 2014 Thomas de Beauchene
+** Last update Sat May 17 00:35:32 2014 chauvo_t
 */
 
-#include "strace.h"
+#include "../include/strace.h"
 
 extern pid_t	g_tracee_pid;
 
@@ -22,22 +22,50 @@ static void	print_char(char c)
 
 void	print_string(unsigned long long int register_value)
 {
+  int	i;
   char	c;
 
   (void)fprintf(stderr, "\"");
+  i = 0;
   c = -1;
-  while (c != '\0')
+  while (c != '\0' && i < 42)
     {
       if ((c = ptrace(PTRACE_PEEKDATA, g_tracee_pid,
 		      register_value, NULL)) == -1)
 	{
-	  warn("ptrace PTRACE_PEEK_DATA error");
+	  fprintf(stderr, "\033[36mptrace PTRACE_PEEK_DATA error: ");
+	  fprintf(stderr, "%s\033[33m\"", strerror(errno));
 	  return ;
 	}
       print_char(c);
       ++register_value;
+      ++i;
     }
   (void)fprintf(stderr, "\"");
+}
+
+void			print_string_tab(unsigned long long int register_value)
+{
+  unsigned long long	str;
+  int			i;
+
+  (void)fprintf(stderr, "[");
+  i = 0;
+  str = (unsigned long)-1;
+  while ((void*)str != NULL && i < 6)
+    {
+      if ((str = ptrace(PTRACE_PEEKDATA, g_tracee_pid,
+			register_value, NULL)) == (unsigned long)-1)
+	{
+	  fprintf(stderr, "\033[36mptrace PTRACE_PEEK_DATA error: ");
+	  fprintf(stderr, "%s\033[33m]", strerror(errno));
+	  return ;
+	}
+      print_string(str);
+      ++register_value;
+      ++i;
+    }
+  (void)fprintf(stderr, "]");
 }
 
 void	print_unimplemented(unsigned long long int register_value)

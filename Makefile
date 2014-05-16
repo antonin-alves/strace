@@ -5,7 +5,7 @@
 ## Login   <chauvo_t@epitech.net>
 ##
 ## Started on  Tue Apr  1 10:16:12 2014 chauvo_t
-## Last update Thu May 15 10:43:06 2014 chauvo_t
+## Last update Sat May 17 00:39:00 2014 chauvo_t
 ##
 
 CXX			:= gcc
@@ -21,6 +21,8 @@ OBJDIR			:= build
 HDRDIR			:= include
 
 SRCS			:=	main.c			\
+				handle_exit.c		\
+				launch_child.c		\
 				print_syscalls.c	\
 				print_types.c		\
 				print_types2.c		\

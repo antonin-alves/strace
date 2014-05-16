@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Fri May 16 10:34:56 2014 Thomas de Beauchene
+** Last update Sat May 17 00:55:27 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -14,22 +14,10 @@ pid_t	g_tracee_pid = -1;
 
 int	step_instruction(pid_t pid, int *status)
 {
-  if (WIFEXITED(*status))
-    exit(EXIT_SUCCESS);
-  if ((WIFSTOPPED(*status)
-       && (WSTOPSIG(*status) == SIGSEGV || WSTOPSIG(*status) == SIGTERM
-	   || WSTOPSIG(*status) == SIGINT || WSTOPSIG(*status) == SIGKILL
-	   || WSTOPSIG(*status) == SIGPIPE || WSTOPSIG(*status) == SIGQUIT
-	   || WSTOPSIG(*status) == SIGFPE || WSTOPSIG(*status) == SIGBUS
-	   || WSTOPSIG(*status) == SIGSYS || WSTOPSIG(*status) == SIGSTKFLT
-	   || WSTOPSIG(*status) == SIGABRT)))
-    {
-      fprintf(stderr, "tracee was terminated by delivery of a signal\n");
-      exit(EXIT_SUCCESS);
-    }
+  handle_exit(status);
   if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
     {
-      warn("ptrace PTRACE_SINGLESTEP error");
+      warn("trace PTRACE_SINGLESTEP error");
       return (FAILURE);
     }
   if (waitpid(pid, status, 0) == -1)
@@ -104,7 +92,7 @@ int	trace_by_pid(pid_t pid)
   return (SUCCESS);
 }
 
-int	trace_by_cmd(char **cmd)
+int	trace_by_cmd(char **cmd) /* TODO: norme */
 {
   pid_t	child;
 
@@ -115,14 +103,8 @@ int	trace_by_cmd(char **cmd)
     }
   if (child == 0)
     {
-      if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) == -1)
-	{
-	  warn("ptrace PTRACE_TRACEME error");
-	  return (FAILURE);
-	}
-      (void)execvp(*cmd, cmd);
-      warn("execvp error");
-      return (FAILURE);
+      if (launch_child(cmd) == FAILURE)
+	exit(EXIT_FAILURE);
     }
   else
     {

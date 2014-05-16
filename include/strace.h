@@ -5,13 +5,14 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Mon May 12 23:46:57 2014 chauvo_t
-** Last update Thu May 15 18:39:30 2014 chauvo_t
+** Last update Sat May 17 00:55:03 2014 chauvo_t
 */
 
 #ifndef STRACE_H_
 # define STRACE_H_
 
 # include <err.h>
+# include <errno.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -50,6 +51,16 @@ typedef enum
   }		t_bool;
 
 /*
+** handle_exit.c
+*/
+void	handle_exit(int *status);
+
+/*
+** launch_child.c
+*/
+int	launch_child(char **cmd);
+
+/*
 ** print_syscalls.c
 */
 void	print_args(int syscall_number, struct user_regs_struct *registers);
@@ -68,6 +79,7 @@ void	print_pointer(unsigned long long int register_value);
 ** print_types2.c
 */
 void	print_string(unsigned long long int register_value);
+void	print_string_tab(unsigned long long int register_value);
 void	print_unimplemented(unsigned long long int register_value);
 void	print_nothing(unsigned long long int register_value);
 
