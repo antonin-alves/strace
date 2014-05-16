@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Sat May 17 00:55:27 2014 chauvo_t
+** Last update Sat May 17 00:57:56 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -92,7 +92,7 @@ int	trace_by_pid(pid_t pid)
   return (SUCCESS);
 }
 
-int	trace_by_cmd(char **cmd) /* TODO: norme */
+int	trace_by_cmd(char **cmd)
 {
   pid_t	child;
 
