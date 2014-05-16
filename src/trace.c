@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Sat May 17 00:57:56 2014 chauvo_t
+** Last update Sat May 17 01:28:56 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -36,21 +36,23 @@ int			analyse_registers(struct user_regs_struct *registers,
 
   if ((rip_pointed_data = ptrace(PTRACE_PEEKDATA, pid,
 				 registers->rip, NULL)) == -1)
-    {
-      warn("ptrace PTRACE_PEEK_DATA error");
-      return (FAILURE);
-    }
+    return (FAILURE);
   rip_pointed_data &= 0xffff;
   if (rip_pointed_data == SYSCALL_OPCODE)
     {
       syscall_number = registers->rax;
-      if (step_instruction(pid, status) == FAILURE)
-	return (FAILURE);
-      if (ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
-	return (FAILURE);
+      if (syscall_number != 60 && syscall_number != 231)
+	{
+	  if (step_instruction(pid, status) == FAILURE)
+	    return (FAILURE);
+	  if (ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
+	    return (FAILURE);
+	}
       if (syscall_number > MAX_SYSCALL
 	  || print_syscall(syscall_number, registers) == FAILURE)
 	return (FAILURE);
+      if (syscall_number == 60 || syscall_number == 231)
+	exit(EXIT_SUCCESS);
     }
   return (SUCCESS);
 }

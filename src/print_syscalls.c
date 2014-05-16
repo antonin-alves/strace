@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:59:47 2014 chauvo_t
-** Last update Sat May 17 00:32:31 2014 chauvo_t
+** Last update Sat May 17 01:27:57 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -81,7 +81,10 @@ int	print_syscall(int nb_syscall, struct user_regs_struct *registers)
   (void)fprintf(stderr, "\033[0m(");
   print_args(nb_syscall, registers);
   (void)fprintf(stderr, "\033[0m) = \033[31m");
-  print_return_value(g_syscalls[nb_syscall].ret_type, registers);
+  if (nb_syscall != 60 && nb_syscall != 231)
+    print_return_value(g_syscalls[nb_syscall].ret_type, registers);
+  else
+    fprintf(stderr, "?");
   (void)fprintf(stderr, "\033[0m");
   (void)printf("\n");
   return (SUCCESS);
