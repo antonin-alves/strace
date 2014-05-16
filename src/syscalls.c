@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 15:52:42 2014 chauvo_t
-** Last update Fri May 16 10:34:43 2014 Thomas de Beauchene
+** Last update Fri May 16 12:13:08 2014 Thomas de Beauchene
 */
 
 #include "strace.h"
@@ -200,7 +200,7 @@ const t_prototype g_syscalls[] =
   {"prctl", 5,
    {"int", "unsigned long", "unsigned long", "unsigned long", "unsigned long"},
    "int"},
-  {"arch_prctl", 2, {"int", "unsigned long"}, "int"},
+  {"arch_prctl", 2, {"int", "unsigned long *"}, "int"},
   {"adjtimex", 1, {"struct timex *"}, "int"},
   {"setrlimit", 2, {"int", "struct rlimit *"}, "int"},
   {"chroot", 1, {"char *"}, "int"},
