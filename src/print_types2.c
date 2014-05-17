@@ -5,10 +5,10 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 00:57:02 2014 chauvo_t
-** Last update Sat May 17 10:37:40 2014 chauvo_t
+** Last update Sat May 17 15:52:14 2014 chauvo_t
 */
 
-#include "../include/strace.h"
+#include "strace.h"
 
 extern pid_t	g_tracee_pid;
 
