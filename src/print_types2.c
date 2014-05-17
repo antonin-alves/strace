@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 00:57:02 2014 chauvo_t
-** Last update Sat May 17 00:35:32 2014 chauvo_t
+** Last update Sat May 17 10:37:40 2014 chauvo_t
 */
 
 #include "../include/strace.h"
@@ -61,8 +61,9 @@ void			print_string_tab(unsigned long long int register_value)
 	  fprintf(stderr, "%s\033[33m]", strerror(errno));
 	  return ;
 	}
-      print_string(str);
-      ++register_value;
+      if (str)
+	print_string(str);
+      register_value += sizeof(char*);
       ++i;
     }
   (void)fprintf(stderr, "]");
