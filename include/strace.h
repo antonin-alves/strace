@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Mon May 12 23:46:57 2014 chauvo_t
-** Last update Sat May 17 23:50:55 2014 chauvo_t
+** Last update Sun May 18 17:39:39 2014 chauvo_t
 */
 
 #ifndef STRACE_H_
@@ -88,11 +88,6 @@ void	print_nothing(unsigned long long int register_value);
 /*
 ** trace.c
 */
-int	step_instruction(pid_t pid, int *status);
-int	analyse_registers(struct user_regs_struct *registers,
-			  pid_t pid, int *status);
 int	trace_process(pid_t pid);
-int	trace_by_pid(pid_t pid);
-int	trace_by_cmd(char **cmd);
 
 #endif /* !STRACE_H_ */

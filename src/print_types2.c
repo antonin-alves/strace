@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 00:57:02 2014 chauvo_t
-** Last update Sun May 18 16:45:34 2014 chauvo_t
+** Last update Sun May 18 16:57:31 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -14,9 +14,9 @@ extern pid_t	g_tracee_pid;
 
 static void	print_char(char c)
 {
-  if ((c > 32 && c < 127) || c == ' ' || c == '\0')
+  if (((c > 32 && c < 127) || c == ' ') && c != '\0')
     (void)fprintf(stderr, "%c", c);
-  else if (c != '\n')
+  else if (c != '\n' && c != '\0')
     (void)fprintf(stderr, "\\%o", c);
 }
 

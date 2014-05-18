@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 15:52:42 2014 chauvo_t
-** Last update Sun May 18 00:45:50 2014 chauvo_t
+** Last update Sun May 18 17:26:39 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -134,11 +134,11 @@ const t_prototype g_syscalls[] =
   */
   { "ptrace", 4,
    {"int", "pid_t", "void *", "void *"}, "long"},
-  { "getuid", 0, {"void"}, "uid_t"},
-  { "syslog", 3, {"int", "char *", "int"}, "int"},
-  { "getgid", 0, {"void"}, "gid_t"},
-  { "setuid", 1, {"uid_t"}, "int"},
-  { "setgid", 1, {"gid_t"}, "int"},
+  {"getuid", 0, {"void"}, "uid_t"},
+  {"syslog", 3, {"int", "char *", "int"}, "int"},
+  {"getgid", 0, {"void"}, "gid_t"},
+  {"setuid", 1, {"uid_t"}, "int"},
+  {"setgid", 1, {"gid_t"}, "int"},
   {"geteuid", 0, {"void"}, "uid_t"},
   {"getegid", 0, {"void"}, "gid_t"},
   {"setpgid", 2, {"pid_t", "pid_t"}, "int"},

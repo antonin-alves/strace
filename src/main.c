@@ -5,12 +5,48 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Mon May 12 23:47:03 2014 chauvo_t
-** Last update Sat May 17 00:22:42 2014 chauvo_t
+** Last update Sun May 18 17:37:17 2014 chauvo_t
 */
 
 #include "strace.h"
 
 extern pid_t	g_tracee_pid;
+
+static int	trace_by_pid(pid_t pid)
+{
+  if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1)
+    {
+      warn("ptrace PTRACE_ATTACH error");
+      return (FAILURE);
+    }
+  g_tracee_pid = pid;
+  if (trace_process(pid) == FAILURE)
+    return (FAILURE);
+  return (SUCCESS);
+}
+
+static int	trace_by_cmd(char **cmd)
+{
+  pid_t	child;
+
+  if ((child = fork()) == -1)
+    {
+      warn("fork error");
+      return (FAILURE);
+    }
+  if (child == 0)
+    {
+      if (launch_child(cmd) == FAILURE)
+	exit(EXIT_FAILURE);
+    }
+  else
+    {
+      g_tracee_pid = child;
+      if (trace_process(child) == FAILURE)
+      	return (FAILURE);
+    }
+  return (SUCCESS);
+}
 
 static void	sig_handler(int signum)
 {

@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Sun May 18 02:45:37 2014 chauvo_t
+** Last update Sun May 18 17:41:03 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -14,7 +14,7 @@ pid_t	g_tracee_pid = -1;
 
 extern t_prototype	g_syscalls[];
 
-int	step_instruction(pid_t pid, int *status)
+static int	step_instruction(pid_t pid, int *status)
 {
   handle_exit(status);
   if (ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL) == -1)
@@ -30,10 +30,33 @@ int	step_instruction(pid_t pid, int *status)
   return (SUCCESS);
 }
 
-int			analyse_registers(struct user_regs_struct *registers,
-					  pid_t pid, int *status)
+static int		analyse_syscall(struct user_regs_struct *registers,
+					pid_t pid, int *status)
 {
   unsigned long long	syscall_number;
+
+  syscall_number = registers->rax;
+  if (syscall_number > MAX_SYSCALL
+      || print_syscall(syscall_number, registers) == FAILURE)
+    return (FAILURE);
+  if (syscall_number != 60 && syscall_number != 231)
+    {
+      if (syscall_number == 1)
+	fprintf(stderr, "\033[0m\n");
+      if (step_instruction(pid, status) == FAILURE
+	  || ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
+	return (FAILURE);
+    }
+  (void)print_return_value(syscall_number,
+			   g_syscalls[syscall_number].ret_type, registers);
+  if (syscall_number == 60 || syscall_number == 231)
+    exit(EXIT_SUCCESS);
+  return (SUCCESS);
+}
+
+static int		analyse_registers(struct user_regs_struct *registers,
+					  pid_t pid, int *status)
+{
   long			rip_pointed_data;
 
   if ((rip_pointed_data = ptrace(PTRACE_PEEKDATA, pid,
@@ -42,20 +65,8 @@ int			analyse_registers(struct user_regs_struct *registers,
   rip_pointed_data &= 0xffff;
   if (rip_pointed_data == SYSCALL_OPCODE)
     {
-      syscall_number = registers->rax;
-      if (syscall_number > MAX_SYSCALL
-	  || print_syscall(syscall_number, registers) == FAILURE)
+      if (analyse_syscall(registers, pid, status) == FAILURE)
 	return (FAILURE);
-      if (syscall_number != 60 && syscall_number != 231)
-	{
-	  if (step_instruction(pid, status) == FAILURE
-	      || ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
-	    return (FAILURE);
-	}
-      (void)print_return_value(syscall_number,
-			       g_syscalls[syscall_number].ret_type, registers);
-      if (syscall_number == 60 || syscall_number == 231)
-	exit(EXIT_SUCCESS);
     }
   return (SUCCESS);
 }
@@ -82,40 +93,4 @@ int				trace_process(pid_t pid)
       if (step_instruction(pid, &status) == FAILURE)
 	return (FAILURE);
     }
-}
-
-int	trace_by_pid(pid_t pid)
-{
-  if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1)
-    {
-      warn("ptrace PTRACE_ATTACH error");
-      return (FAILURE);
-    }
-  g_tracee_pid = pid;
-  if (trace_process(pid) == FAILURE)
-    return (FAILURE);
-  return (SUCCESS);
-}
-
-int	trace_by_cmd(char **cmd)
-{
-  pid_t	child;
-
-  if ((child = fork()) == -1)
-    {
-      warn("fork error");
-      return (FAILURE);
-    }
-  if (child == 0)
-    {
-      if (launch_child(cmd) == FAILURE)
-	exit(EXIT_FAILURE);
-    }
-  else
-    {
-      g_tracee_pid = child;
-      if (trace_process(child) == FAILURE)
-      	return (FAILURE);
-    }
-  return (SUCCESS);
 }
