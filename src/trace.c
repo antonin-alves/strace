@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Sun May 18 17:41:03 2014 chauvo_t
+** Last update Sun May 18 20:11:45 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -50,7 +50,12 @@ static int		analyse_syscall(struct user_regs_struct *registers,
   (void)print_return_value(syscall_number,
 			   g_syscalls[syscall_number].ret_type, registers);
   if (syscall_number == 60 || syscall_number == 231)
-    exit(EXIT_SUCCESS);
+    {
+      (void)printf(" was returned by tracee");
+      (void)system("echo -n $?");
+      (void)printf("\n");
+      exit(EXIT_SUCCESS);
+    }
   return (SUCCESS);
 }
 
