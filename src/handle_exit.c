@@ -5,10 +5,12 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Fri May 16 19:22:06 2014 chauvo_t
-** Last update Sat May 17 15:52:20 2014 chauvo_t
+** Last update Sun May 18 16:41:14 2014 chauvo_t
 */
 
 #include "strace.h"
+
+extern pid_t	g_tracee_pid;
 
 static void	print_signal(int *status)
 {
@@ -34,11 +36,14 @@ static void	print_signal(int *status)
     fprintf(stderr, "SIGSTKFLT\n");
   else if (WSTOPSIG(*status) == SIGABRT)
     fprintf(stderr, "SIGABRT\n");
+  else if (WSTOPSIG(*status) == SIGUSR1
+	   || WSTOPSIG(*status) == SIGUSR2)
+    fprintf(stderr, "SIGUSR1 / SIGUSR2\n");
 }
 
 void	handle_exit(int *status)
 {
-  if (WIFEXITED(*status))
+  if (WIFEXITED(*status) || WIFSIGNALED(*status))
     exit(EXIT_SUCCESS);
   if (!(WIFSTOPPED(*status)
 	&& (WSTOPSIG(*status) == SIGSEGV || WSTOPSIG(*status) == SIGTERM
