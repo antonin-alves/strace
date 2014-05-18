@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Fri May 16 19:22:06 2014 chauvo_t
-** Last update Sun May 18 20:04:00 2014 chauvo_t
+** Last update Sun May 18 20:13:27 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -43,8 +43,8 @@ void	handle_exit(int *status)
 {
   if (WIFEXITED(*status) || WIFSIGNALED(*status))
     {
-      (void)printf("trace exited with ");
-      (void)system("echo $?");
+      (void)printf(" was returned by tracee");
+      (void)system("echo -n $?");
       (void)printf("\n");
       exit(EXIT_SUCCESS);
     }
