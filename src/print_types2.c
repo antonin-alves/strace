@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Thu May 15 00:57:02 2014 chauvo_t
-** Last update Sat May 17 15:52:14 2014 chauvo_t
+** Last update Sun May 18 02:42:45 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -23,7 +23,7 @@ static void	print_char(char c)
 void	print_string(unsigned long long int register_value)
 {
   int	i;
-  char	c;
+  long	c;
 
   (void)fprintf(stderr, "\"");
   i = 0;
@@ -51,11 +51,11 @@ void			print_string_tab(unsigned long long int register_value)
 
   (void)fprintf(stderr, "[");
   i = 0;
-  str = (unsigned long)-1;
+  str = (unsigned long long)-1;
   while ((void*)str != NULL && i < 6)
     {
       if ((str = ptrace(PTRACE_PEEKDATA, g_tracee_pid,
-			register_value, NULL)) == (unsigned long)-1)
+			register_value, NULL)) == (unsigned long long)-1)
 	{
 	  fprintf(stderr, "\033[36mptrace PTRACE_PEEK_DATA error: ");
 	  fprintf(stderr, "%s\033[33m]", strerror(errno));
@@ -67,6 +67,8 @@ void			print_string_tab(unsigned long long int register_value)
       ++i;
     }
   (void)fprintf(stderr, "]");
+  if (i >= 6)
+    (void)fprintf(stderr, " ... ");
 }
 
 void	print_unimplemented(unsigned long long int register_value)

@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:59:47 2014 chauvo_t
-** Last update Sat May 17 01:27:57 2014 chauvo_t
+** Last update Sun May 18 02:42:55 2014 chauvo_t
 */
 
 #include "strace.h"
@@ -49,12 +49,20 @@ void	print_arg(char *type, int arg_nb, struct user_regs_struct *registers)
     }
 }
 
-void	print_return_value(char *type, struct user_regs_struct *registers)
+void	print_return_value(int nb_syscall,
+			   char *type, struct user_regs_struct *registers)
 {
-  if ((long long)registers->rax < 0)
-    fprintf(stderr, "-1 (%s)", strerror(-registers->rax));
+  (void)fprintf(stderr, "\033[0m) = \033[31m");
+  if (nb_syscall != 60 && nb_syscall != 231)
+    {
+      if ((long long)registers->rax < 0)
+	fprintf(stderr, "-1 (%s)", strerror(-registers->rax));
+      else
+	print_arg(type, -1, registers);
+    }
   else
-    print_arg(type, -1, registers);
+    fprintf(stderr, "?");
+  (void)fprintf(stderr, "\033[0m\n");
 }
 
 void	print_args(int nb_syscall, struct user_regs_struct *registers)
@@ -80,12 +88,5 @@ int	print_syscall(int nb_syscall, struct user_regs_struct *registers)
   (void)fprintf(stderr, "%s", g_syscalls[nb_syscall].name);
   (void)fprintf(stderr, "\033[0m(");
   print_args(nb_syscall, registers);
-  (void)fprintf(stderr, "\033[0m) = \033[31m");
-  if (nb_syscall != 60 && nb_syscall != 231)
-    print_return_value(g_syscalls[nb_syscall].ret_type, registers);
-  else
-    fprintf(stderr, "?");
-  (void)fprintf(stderr, "\033[0m");
-  (void)printf("\n");
   return (SUCCESS);
 }

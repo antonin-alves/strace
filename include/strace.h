@@ -5,7 +5,7 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Mon May 12 23:46:57 2014 chauvo_t
-** Last update Sat May 17 00:55:03 2014 chauvo_t
+** Last update Sat May 17 23:50:55 2014 chauvo_t
 */
 
 #ifndef STRACE_H_
@@ -64,6 +64,8 @@ int	launch_child(char **cmd);
 ** print_syscalls.c
 */
 void	print_args(int syscall_number, struct user_regs_struct *registers);
+void	print_return_value(int nb_syscall,
+			   char *type, struct user_regs_struct *registers);
 int	print_syscall(int syscall_number, struct user_regs_struct *registers);
 
 /*

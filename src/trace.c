@@ -5,12 +5,14 @@
 ** Login   <chauvo_t@epitech.net>
 **
 ** Started on  Wed May 14 21:58:47 2014 chauvo_t
-** Last update Sat May 17 01:28:56 2014 chauvo_t
+** Last update Sun May 18 02:45:37 2014 chauvo_t
 */
 
 #include "strace.h"
 
 pid_t	g_tracee_pid = -1;
+
+extern t_prototype	g_syscalls[];
 
 int	step_instruction(pid_t pid, int *status)
 {
@@ -41,16 +43,17 @@ int			analyse_registers(struct user_regs_struct *registers,
   if (rip_pointed_data == SYSCALL_OPCODE)
     {
       syscall_number = registers->rax;
-      if (syscall_number != 60 && syscall_number != 231)
-	{
-	  if (step_instruction(pid, status) == FAILURE)
-	    return (FAILURE);
-	  if (ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
-	    return (FAILURE);
-	}
       if (syscall_number > MAX_SYSCALL
 	  || print_syscall(syscall_number, registers) == FAILURE)
 	return (FAILURE);
+      if (syscall_number != 60 && syscall_number != 231)
+	{
+	  if (step_instruction(pid, status) == FAILURE
+	      || ptrace(PTRACE_GETREGS, pid, NULL, registers) == -1)
+	    return (FAILURE);
+	}
+      (void)print_return_value(syscall_number,
+			       g_syscalls[syscall_number].ret_type, registers);
       if (syscall_number == 60 || syscall_number == 231)
 	exit(EXIT_SUCCESS);
     }

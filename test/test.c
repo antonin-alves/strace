@@ -10,7 +10,7 @@ int	main(int ac, char **av)
   /*   { */
   /*     ++ac; */
   /*   } */
-  /* *((int*)NULL) = 0; */
+  *((int*)NULL) = 0;
   /* abort(); */
   return (0);
 }
