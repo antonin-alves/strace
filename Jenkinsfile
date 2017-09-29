@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image "ubuntu:latest" }
+        docker { image "ros:kinetic" }
     }
     stages {
         stage('Build')
